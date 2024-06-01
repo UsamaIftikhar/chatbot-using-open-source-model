@@ -1,6 +1,22 @@
+import sys
+import os
+sys.path.append('/mnt/pip_libraries')
+import os
+
+# Set environment variables
+os.environ['OLLAMA_MODEL_DIR'] = '/mnt/custom_ollama_model_dir'
+os.environ['TMPDIR'] = '/mnt/custom_tmp_dir'
+
+# Now, pull the model
+import subprocess
+
+subprocess.run(["ollama", "pull", "mistral-7b"], capture_output=True, text=True)
+
 from langchain_community.llms import Ollama
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.embeddings import OllamaEmbeddings
+from langchain.prompts import PromptTemplate
+from langchain_community.vectorstores import DocArrayInMemorySearch
 
 loader = PyPDFLoader('redhood.pdf')
 pages = loader.load_and_split()
